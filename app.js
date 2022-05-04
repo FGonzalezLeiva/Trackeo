@@ -4,7 +4,7 @@ const app = express()
 app.get('/',(req,res)=>{
     //console.log('solicitud')
     //console.log(path.join(__dirname, '/trackeo.html'))
-    res.sendFile(path.join(__dirname, '/trackeo.html'));
+    res.sendFile(path.join(__dirname, '/index.html'));
 })
 
 app.listen(3000,()=>{
