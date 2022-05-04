@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtime location tracker</title>
+
+    <!-- leaflet css  -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map" style="width: 400px; height: 400px;"></div>
+</body>
+</html>
+
+<!-- leaflet js  -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    const generarmap = ()=>{
+        // Map initialization 
+        let map = L.map('map').setView([-33.4299291, -70.7543534], 10);
+
+            //osm layer
+            let osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            });
+            osm.addTo(map);
+
+            if(!navigator.geolocation) {
+                console.log("Your browser doesn't support geolocation feature!")
+            } else {
+                setInterval(() => {
+                    navigator.geolocation.getCurrentPosition(getPosition)
+                }, 5000);
+            }
+
+            let marker, circle;
+
+            const getPosition =(position)=>{
+                // console.log(position)
+                let lat = position.coords.latitude
+                let lon = position.coords.longitude
+
+                if(marker) {
+                    map.removeLayer(marker)
+                }
+
+                marker = L.marker([lat, lon])
+                var featureGroup = L.featureGroup([marker]).addTo(map)
+                map.fitBounds(featureGroup.getBounds())
+            }
+    }
+    generarmap()
+
+</script>
